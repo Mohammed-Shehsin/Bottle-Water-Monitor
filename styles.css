@@ -235,3 +235,6 @@ footer{display:flex;justify-content:space-between;gap:16px;color:#9aa8b1;font-si
 
 
 .device-ground{fill:none;stroke:#566976;stroke-width:3;stroke-linecap:round}
+
+
+.device-ground-visible{fill:none;stroke:#566976;stroke-width:3;stroke-linecap:round}
