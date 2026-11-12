@@ -12,6 +12,11 @@
   const simulationControls = $("simulationControls");
   const connectionPanel = $("connectionPanel");
   const wiringGuide = $("wiringGuide");
+  const esp32Nav = $("esp32Nav");
+  const codeGuide = $("codeGuide");
+  const usageGuide = $("usageGuide");
+  const copyCodeButton = $("copyCodeBtn");
+  const copyStatus = $("copyStatus");
   const serialSelect = $("serialPortSelect");
   const baudSelect = $("baudSelect");
   const serialConnectButton = $("serialConnectBtn");
@@ -453,6 +458,9 @@
     $("espModeBtn").setAttribute("aria-pressed", String(!simulation));
     connectionPanel.hidden = simulation;
     if (wiringGuide) wiringGuide.hidden = simulation;
+    if (esp32Nav) esp32Nav.hidden = simulation;
+    if (codeGuide) codeGuide.hidden = simulation;
+    if (usageGuide) usageGuide.hidden = simulation;
     simulationControls.hidden = !simulation;
     $("chartSub").textContent = simulation ? "Simulated fill over time" : "Waiting for live sensor data";
     $("footnoteText").innerHTML = simulation
@@ -491,6 +499,34 @@
   });
   serialConnectButton.addEventListener("click", connectSerial);
   wifiConnectButton.addEventListener("click", connectWifi);
+
+  async function copyFirmwareCode() {
+    const codeBlock = $("esp32CodeBlock");
+    if (!codeBlock || !copyStatus) return;
+    const code = codeBlock.innerText;
+    try {
+      await navigator.clipboard.writeText(code);
+      copyStatus.textContent = "Copied to clipboard";
+      copyCodeButton.textContent = "Copied";
+    } catch (_) {
+      const helper = document.createElement("textarea");
+      helper.value = code;
+      helper.style.position = "fixed";
+      helper.style.opacity = "0";
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand("copy");
+      helper.remove();
+      copyStatus.textContent = "Copied to clipboard";
+      copyCodeButton.textContent = "Copied";
+    }
+    setTimeout(() => {
+      copyStatus.textContent = "Ready to copy";
+      copyCodeButton.textContent = "Copy code";
+    }, 1800);
+  }
+
+  if (copyCodeButton) copyCodeButton.addEventListener("click", copyFirmwareCode);
 
   slider.addEventListener("input", event => renderSimulation(event.target.value));
   toggleButton.addEventListener("click", () => {
