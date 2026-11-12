@@ -2,6 +2,8 @@
 
 A responsive, single-page dashboard for the ultrasonic bottle water-level project. It has a local simulation mode and an ESP32 mode for USB serial or WebSocket data.
 
+**Live website:** [https://mohammed-shehsin.github.io/Bottle-Water-Monitor/](https://mohammed-shehsin.github.io/Bottle-Water-Monitor/)
+
 ## Run locally
 
 1. Install Git and a modern desktop Chrome or Edge browser if you plan to use USB serial.
