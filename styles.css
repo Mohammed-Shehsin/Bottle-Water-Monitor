@@ -224,3 +224,11 @@ footer{display:flex;justify-content:space-between;gap:16px;color:#9aa8b1;font-si
 .connection-table td:first-child{color:var(--ink);font-weight:700;width:43%}
 .connection-table td:last-child{color:var(--muted)}
 .connection-table tr:last-child td{border-bottom:0}
+
+
+.divider-resistor{fill:none;stroke:#d06b4e;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.divider-wire{fill:none;stroke:#d06b4e;stroke-width:3;stroke-linecap:round}
+.divider-ground{fill:none;stroke:#566976;stroke-width:2.5;stroke-linecap:round}
+.divider-node{fill:#d06b4e;stroke:#fff;stroke-width:2}
+.divider-label{fill:#a9513e;font-size:9px;font-weight:800;paint-order:stroke;stroke:#f4f9f9;stroke-width:4px;stroke-linejoin:round}
+.divider-voltage{fill:#247790;font-size:9px;font-weight:800;paint-order:stroke;stroke:#f4f9f9;stroke-width:4px;stroke-linejoin:round}
