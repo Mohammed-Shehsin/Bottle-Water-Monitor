@@ -113,22 +113,24 @@
             <circle class="signal-dot signal-trig" r="5"><animateMotion dur="2.1s" repeatCount="indefinite" path="M235 125 C335 125 390 125 505 125"/></circle>
             <circle class="signal-dot signal-echo" r="5"><animateMotion dur="1.7s" repeatCount="indefinite" path="M505 170 C390 170 335 170 235 170"/></circle>
             <rect class="device-board" x="45" y="50" width="190" height="205" rx="18" fill="url(#boardFill)"/>
-            <text class="device-title" x="140" y="83" text-anchor="middle">ESP32</text>
-            <text class="device-subtitle" x="140" y="101" text-anchor="middle">3.3 V microcontroller</text>
+            <text class="device-title" x="125" y="78" text-anchor="middle">ESP32</text>
+            <text class="device-subtitle" x="125" y="95" text-anchor="middle">3.3 V microcontroller</text>
             <rect class="pin pin-5v" x="208" y="77" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="91" text-anchor="end">5V / VIN</text>
             <rect class="pin pin-trig" x="208" y="115" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="129" text-anchor="end">GPIO 5</text>
             <rect class="pin pin-echo" x="208" y="160" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="174" text-anchor="end">GPIO 27</text>
             <rect class="pin pin-gnd" x="208" y="208" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="222" text-anchor="end">GND</text>
+            <path class="device-ground-visible" d="M235 218 V250"/>
             <rect class="sensor-body" x="505" y="74" width="205" height="160" rx="18" fill="url(#sensorFill)"/>
             <text class="device-title sensor-title" x="607" y="102" text-anchor="middle">HC-SR04</text>
             <text class="device-subtitle sensor-subtitle" x="607" y="120" text-anchor="middle">ultrasonic sensor</text>
             <circle class="transducer" cx="558" cy="158" r="26"/><circle class="transducer" cx="656" cy="158" r="26"/>
             <text class="sensor-pin-label" x="527" y="211">VCC</text><text class="sensor-pin-label" x="579" y="211">TRIG</text><text class="sensor-pin-label" x="631" y="211">ECHO</text><text class="sensor-pin-label" x="681" y="211">GND</text>
+            <path class="device-ground-visible" d="M681 218 V250"/>
             <text class="wire-label label-power" x="355" y="77">5 V power</text>
             <text class="wire-label label-trig" x="355" y="116">trigger pulse</text>
             <text class="wire-label label-echo" x="285" y="160">ECHO return</text>
-            <text class="divider-label" x="415" y="155">R1 2.2 kΩ</text>
-            <text class="divider-label" x="393" y="244">R2 3.3 kΩ</text>
+            <text class="divider-label" x="416" y="146">R1 2.2 kΩ</text>
+            <text class="divider-label" x="395" y="242">R2 3.3 kΩ</text>
             <text class="divider-voltage" x="470" y="280">≈3.0 V to GPIO 27</text>
             <text class="wire-label label-ground" x="250" y="294">COMMON GROUND</text>
           </svg>
