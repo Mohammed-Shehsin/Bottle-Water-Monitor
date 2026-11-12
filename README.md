@@ -40,7 +40,7 @@ R1 is in series between ECHO and the junction. R2 connects from that junction to
 
 The HC-SR04 ECHO output can be about 5 V, while ESP32 GPIO uses 3.3 V logic. The divider reduces a nominal 5 V signal to approximately 3.0 V:
 
-`V_{GPIO}=5\,V\times\frac{3.3\,k\Omega}{2.2\,k\Omega+3.3\,k\Omega}\approx3.0\,V`
+`V_GPIO = 5 V × 3.3 kΩ / (2.2 kΩ + 3.3 kΩ) ≈ 3.0 V`
 
 Do not connect the HC-SR04 ECHO pin directly to an ESP32 GPIO.
 
