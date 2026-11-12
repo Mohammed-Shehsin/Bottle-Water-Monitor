@@ -28,6 +28,12 @@
       <div class="updated" id="updated">Demo readings · ready</div>
     </section>
 
+    <nav class="section-nav" id="esp32Nav" hidden aria-label="ESP32 setup sections">
+      <a href="#wiringGuide">01 Wiring</a>
+      <a href="#codeGuide">02 Firmware code</a>
+      <a href="#usageGuide">03 Use the dashboard</a>
+    </nav>
+
     <section class="card connection-panel" id="connectionPanel" hidden aria-label="ESP32 connection settings">
       <div class="connection-head">
         <div><p class="eyebrow">ESP32 mode</p><h2>Connect your device</h2><p>Hardware readings appear only after a connection sends valid sensor data.</p></div>
@@ -119,6 +125,83 @@
           <pre class="wiring-code">{"distance_cm": 16.6}</pre>
         </div>
       </div>
+    </section>
+
+    <section class="card code-guide" id="codeGuide" hidden aria-labelledby="code-title">
+      <div class="code-head">
+        <div>
+          <p class="eyebrow">Firmware code</p>
+          <h2 id="code-title">Upload this Arduino IDE sketch to the ESP32</h2>
+          <p>The sketch reads the HC-SR04 and sends one JSON measurement every 500 ms over USB Serial at 115200 baud.</p>
+        </div>
+        <button class="btn btn-primary copy-code-btn" id="copyCodeBtn" type="button">Copy code</button>
+      </div>
+      <div class="code-toolbar">
+        <button class="code-tab active" type="button" data-code-tab="serial">USB Serial / COM</button>
+        <span class="copy-status" id="copyStatus" role="status" aria-live="polite">Ready to copy</span>
+      </div>
+      <pre class="code-block" id="esp32CodeBlock"><code>// ESP32 + HC-SR04 bottle water-level monitor
+// Wiring: TRIG -> GPIO 5, ECHO -> voltage divider -> GPIO 18
+// Serial output: one JSON object per line at 115200 baud
+
+const int TRIG_PIN = 5;
+const int ECHO_PIN = 18;
+
+const float EMPTY_DISTANCE_CM = 30.0;  // sensor-to-bottom distance
+const float FULL_DISTANCE_CM  = 6.0;   // sensor-to-water distance at 100%
+
+float readDistanceCm() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(3);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  unsigned long duration = pulseIn(ECHO_PIN, HIGH, 30000);
+  if (duration == 0) return NAN;
+
+  return (duration * 0.0343f) / 2.0f;
+}
+
+void setup() {
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  Serial.begin(115200);
+}
+
+void loop() {
+  float distance = readDistanceCm();
+
+  if (!isnan(distance)) {
+    float level = 100.0f *
+      (EMPTY_DISTANCE_CM - distance) /
+      (EMPTY_DISTANCE_CM - FULL_DISTANCE_CM);
+
+    level = constrain(level, 0.0f, 100.0f);
+
+    Serial.print("{\"distance_cm\":");
+    Serial.print(distance, 1);
+    Serial.print(",\"level_percent\":");
+    Serial.print(level, 1);
+    Serial.println("}");
+  }
+
+  delay(500);
+}</code></pre>
+      <div class="code-note"><strong>Upload checklist:</strong> Select your ESP32 board and COM port in Arduino IDE, upload the sketch, then open this website in desktop Chrome or Edge. Select the same COM port, choose 115200 baud, and click Connect.</div>
+    </section>
+
+    <section class="card usage-guide" id="usageGuide" hidden aria-labelledby="usage-title">
+      <div>
+        <p class="eyebrow">Dashboard procedure</p>
+        <h2 id="usage-title">Use the live ESP32 page</h2>
+      </div>
+      <ol class="usage-steps">
+        <li><strong>Build safely:</strong> power the HC-SR04 from 5 V and protect ECHO with the resistor divider shown above.</li>
+        <li><strong>Upload firmware:</strong> copy the sketch, upload it to the ESP32, and keep the USB cable connected.</li>
+        <li><strong>Connect:</strong> choose <em>USB Serial / COM</em>, select the authorized port, choose <em>115200 baud</em>, then press <em>Connect</em>.</li>
+        <li><strong>Verify:</strong> the status changes to live ESP32 data and the bottle, percentage, distance, and history update together.</li>
+      </ol>
     </section>
 
     <section class="dashboard" aria-label="Water level dashboard">
