@@ -191,3 +191,7 @@ footer{display:flex;justify-content:space-between;gap:16px;color:#9aa8b1;font-si
 .guide-tab{border:1px solid #dce8eb;background:#fff;color:#4f7180;text-decoration:none;border-radius:99px;padding:7px 13px;font-size:10px;font-weight:750;cursor:pointer;transition:background .2s,color .2s,transform .15s,box-shadow .2s}
 .guide-tab:hover{background:#eaf6f8;color:#216d86;transform:translateY(-1px)}
 .guide-tab.active{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 3px 9px rgba(21,52,81,.16)}
+
+
+/* Respect hidden state for layout containers and subsection navigation */
+.section-nav[hidden],.dashboard[hidden],.wiring-card[hidden],.code-guide[hidden],.usage-guide[hidden]{display:none!important}
