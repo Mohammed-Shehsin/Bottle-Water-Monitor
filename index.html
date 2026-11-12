@@ -15,6 +15,8 @@
       <span>Bottle Monitor<small>Ultrasonic level system</small></span>
     </div>
     <div class="top-right">
+      <span class="creator-label" title="Created by Shehsin Thamarachalil Abdulresak">SHeHSiN</span>
+      <button class="help-button" id="helpButton" type="button" aria-label="Open help and navigation guide" aria-controls="helpPanel">?</button>
       <div class="mode-switch" role="group" aria-label="Dashboard mode">
         <button class="mode-tab" id="simModeBtn" type="button" aria-pressed="true">Simulation</button>
         <button class="mode-tab" id="espModeBtn" type="button" aria-pressed="false">ESP32</button>
@@ -142,6 +144,7 @@
         <span class="copy-status" id="copyStatus" role="status" aria-live="polite">Ready to copy</span>
       </div>
       <pre class="code-block" id="esp32CodeBlock"><code>// ESP32 + HC-SR04 bottle water-level monitor
+// Author: Shehsin Thamarachalil Abdulresak
 // Wiring: TRIG -> GPIO 5, ECHO -> voltage divider -> GPIO 18
 // Serial output: one JSON object per line at 115200 baud
 
@@ -280,7 +283,19 @@ void loop() {
     </section>
 
     <div class="footnote" id="modeFootnote"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10.8v5M12 7.8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="footnoteText"><strong>Simulation:</strong> adjust the slider or start the fill animation. In ESP32 mode, the dashboard waits for a real device connection.</span></div>
-    <footer><span>Ultrasonic bottle level · classroom prototype</span><span>Level estimate is based on calibrated bottle height</span></footer>
+    <div class="help-panel" id="helpPanel" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <div class="help-card">
+        <div class="help-card-head"><div><p class="eyebrow">Quick guide</p><h2 id="helpTitle">How to use this project</h2></div><button class="help-close" id="helpClose" type="button" aria-label="Close help">×</button></div>
+        <div class="help-grid">
+          <div class="help-item"><span class="help-number">1</span><div><strong>Choose a mode</strong><p><b>Simulation</b> demonstrates the bottle filling without hardware. <b>ESP32</b> waits for live sensor data.</p></div></div>
+          <div class="help-item"><span class="help-number">2</span><div><strong>Use the ESP32 tabs</strong><p><b>Dashboard</b> shows readings, <b>Connect</b> selects Serial/Wi-Fi, <b>Schematics</b> explains wiring, and <b>Code</b> provides the firmware.</p></div></div>
+          <div class="help-item"><span class="help-number">3</span><div><strong>Follow the data path</strong><p>Ultrasonic sensor → ESP32 → JSON message → browser dashboard → bottle animation and history.</p></div></div>
+          <div class="help-item"><span class="help-number">4</span><div><strong>First hardware test</strong><p>Upload the copied sketch, keep USB connected, select the COM port, choose 115200 baud, and press Connect.</p></div></div>
+        </div>
+        <div class="help-tip"><strong>Safety tip:</strong> HC-SR04 ECHO can be 5 V. Use the resistor divider shown in Schematics before connecting it to an ESP32 GPIO.</div>
+      </div>
+    </div>
+    <footer><span>Ultrasonic bottle level · SHeHSiN classroom prototype</span><span>Created by Shehsin Thamarachalil Abdulresak</span></footer>
   </main>
 </div>
 <script src="./app.js" defer></script>
