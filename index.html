@@ -113,7 +113,7 @@
           <div class="wiring-legend"><span><i class="legend-dot power"></i>Power</span><span><i class="legend-dot trig"></i>TRIG</span><span><i class="legend-dot echo"></i>ECHO return</span><span><i class="legend-dot ground"></i>Ground</span></div>
         </div>
         <div class="wiring-notes">
-          <div class="wiring-note safe"><strong>Important: protect ECHO</strong><span>HC-SR04 ECHO can output 5 V. ESP32 GPIO is 3.3 V. Use a resistor divider before GPIO 18.</span></div>
+          <div class="wiring-note safe"><strong>Important: protect ECHO</strong><span>HC-SR04 ECHO can output 5 V. ESP32 GPIO is 3.3 V. Use a divider before GPIO 18: 1 kΩ from ECHO to the GPIO node, then 2 kΩ from that node to GND.</span></div>
           <div class="wiring-note"><strong>Suggested connections</strong><span>VCC → 5V/VIN · GND → GND · TRIG → GPIO 5 · ECHO → divider → GPIO 18.</span></div>
           <div class="wiring-note"><strong>Use this website</strong><span>1. Build and power the circuit. 2. Upload firmware that sends one JSON line per reading. 3. Choose ESP32 mode. 4. Select USB Serial / COM or Wi-Fi. 5. Connect and confirm live readings.</span></div>
           <pre class="wiring-code">{"distance_cm": 16.6}</pre>
