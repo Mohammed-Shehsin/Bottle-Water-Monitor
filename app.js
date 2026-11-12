@@ -11,6 +11,7 @@
   const toggleButton = $("toggleBtn");
   const simulationControls = $("simulationControls");
   const connectionPanel = $("connectionPanel");
+  const dashboardSection = $("dashboardSection");
   const wiringGuide = $("wiringGuide");
   const esp32Nav = $("esp32Nav");
   const codeGuide = $("codeGuide");
@@ -440,7 +441,28 @@
     $("wifiPanel").hidden = serialActive;
   }
 
-  async function setMode(nextMode) {
+  async function setMode(nextMode) {  function setGuideSection(target) {
+    if (mode !== "esp32") return;
+    const panels = {
+      dashboard: dashboardSection,
+      connect: connectionPanel,
+      schematics: wiringGuide,
+      code: codeGuide
+    };
+    Object.entries(panels).forEach(([name, panel]) => {
+      if (panel) panel.hidden = name !== target;
+    });
+    if (usageGuide) usageGuide.hidden = target !== "code";
+    if (esp32Nav) {
+      esp32Nav.querySelectorAll("[data-guide-target]").forEach(button => {
+        button.classList.toggle("active", button.dataset.guideTarget === target);
+      });
+    }
+    const activePanel = panels[target];
+    if (activePanel) activePanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+
     if (mode === nextMode) return;
     if (fillTimer) {
       clearInterval(fillTimer);
@@ -456,12 +478,14 @@
     const simulation = mode === "simulation";
     $("simModeBtn").setAttribute("aria-pressed", String(simulation));
     $("espModeBtn").setAttribute("aria-pressed", String(!simulation));
-    connectionPanel.hidden = simulation;
-    if (wiringGuide) wiringGuide.hidden = simulation;
     if (esp32Nav) esp32Nav.hidden = simulation;
-    if (codeGuide) codeGuide.hidden = simulation;
-    if (usageGuide) usageGuide.hidden = simulation;
+    if (dashboardSection) dashboardSection.hidden = false;
+    if (connectionPanel) connectionPanel.hidden = true;
+    if (wiringGuide) wiringGuide.hidden = true;
+    if (codeGuide) codeGuide.hidden = true;
+    if (usageGuide) usageGuide.hidden = true;
     simulationControls.hidden = !simulation;
+    if (!simulation) setGuideSection("dashboard");
     $("chartSub").textContent = simulation ? "Simulated fill over time" : "Waiting for live sensor data";
     $("footnoteText").innerHTML = simulation
       ? "<strong>Simulation:</strong> adjust the slider or start the fill animation. In ESP32 mode, the dashboard waits for a real device connection."
@@ -490,6 +514,9 @@
 
   $("simModeBtn").addEventListener("click", () => setMode("simulation"));
   $("espModeBtn").addEventListener("click", () => setMode("esp32"));
+  document.querySelectorAll("[data-guide-target]").forEach(button => {
+    button.addEventListener("click", () => setGuideSection(button.dataset.guideTarget));
+  });
   $("serialTab").addEventListener("click", () => setTransport("serial"));
   $("wifiTab").addEventListener("click", () => setTransport("wifi"));
   choosePortButton.addEventListener("click", chooseSerialPort);
