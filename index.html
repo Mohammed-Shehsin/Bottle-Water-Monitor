@@ -107,7 +107,7 @@
             <text class="device-subtitle" x="140" y="101" text-anchor="middle">3.3 V microcontroller</text>
             <rect class="pin pin-5v" x="208" y="77" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="91" text-anchor="end">5V / VIN</text>
             <rect class="pin pin-trig" x="208" y="115" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="129" text-anchor="end">GPIO 5</text>
-            <rect class="pin pin-echo" x="208" y="160" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="174" text-anchor="end">GPIO 18</text>
+            <rect class="pin pin-echo" x="208" y="160" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="174" text-anchor="end">GPIO 27</text>
             <rect class="pin pin-gnd" x="208" y="208" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="222" text-anchor="end">GND</text>
             <rect class="sensor-body" x="505" y="74" width="205" height="160" rx="18" fill="url(#sensorFill)"/>
             <text class="device-title sensor-title" x="607" y="102" text-anchor="middle">HC-SR04</text>
@@ -122,8 +122,8 @@
           <div class="wiring-legend"><span><i class="legend-dot power"></i>Power</span><span><i class="legend-dot trig"></i>TRIG</span><span><i class="legend-dot echo"></i>ECHO return</span><span><i class="legend-dot ground"></i>Ground</span></div>
         </div>
         <div class="wiring-notes">
-          <div class="wiring-note safe"><strong>Important: protect ECHO</strong><span>HC-SR04 ECHO can output 5 V. ESP32 GPIO is 3.3 V. Use a divider before GPIO 18: 1 kΩ from ECHO to the GPIO node, then 2 kΩ from that node to GND.</span></div>
-          <div class="wiring-note"><strong>Suggested connections</strong><span>VCC → 5V/VIN · GND → GND · TRIG → GPIO 5 · ECHO → divider → GPIO 18.</span></div>
+          <div class="wiring-note safe"><strong>Important: protect ECHO</strong><span>HC-SR04 ECHO can output 5 V. ESP32 GPIO is 3.3 V. Use a divider before GPIO 27: 2.2 kΩ from ECHO to the GPIO 27 node, then 3.3 kΩ from that node to GND.</span></div>
+          <div class="wiring-note wiring-table-note"><strong>Suggested connections</strong><table class="connection-table"><thead><tr><th>Signal</th><th>Connect to</th></tr></thead><tbody><tr><td>HC-SR04 VCC</td><td>ESP32 5V / VIN</td></tr><tr><td>HC-SR04 GND</td><td>ESP32 GND</td></tr><tr><td>HC-SR04 TRIG</td><td>ESP32 GPIO 5</td></tr><tr><td>HC-SR04 ECHO</td><td>R1 2.2 kΩ → GPIO 27 node</td></tr><tr><td>Divider node</td><td>R2 3.3 kΩ → GND</td></tr></tbody></table></div>
           <div class="wiring-note"><strong>Use this website</strong><span>1. Build and power the circuit. 2. Upload firmware that sends one JSON line per reading. 3. Choose ESP32 mode. 4. Select USB Serial / COM or Wi-Fi. 5. Connect and confirm live readings.</span></div>
           <pre class="wiring-code">{"distance_cm": 16.6}</pre>
         </div>
@@ -145,7 +145,7 @@
       </div>
       <pre class="code-block" id="esp32CodeBlock"><code>// ESP32 + HC-SR04 bottle water-level monitor
 // Author: Shehsin Thamarachalil Abdulresak
-// Wiring: TRIG -> GPIO 5, ECHO -> voltage divider -> GPIO 18
+// Wiring: TRIG -> GPIO 5, ECHO -> voltage divider -> GPIO 27
 // Serial output: one JSON object per line at 115200 baud
 
 const int TRIG_PIN = 5;
