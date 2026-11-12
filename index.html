@@ -69,6 +69,58 @@
       </div>
     </section>
 
+    <section class="card wiring-card" aria-labelledby="wiring-title">
+      <div class="wiring-head">
+        <div>
+          <p class="eyebrow">Hardware guide</p>
+          <h2 id="wiring-title">Connect the ESP32 to the ultrasonic sensor</h2>
+          <p>Use this wiring guide before selecting ESP32 mode. The animated signal path shows how a distance measurement reaches this dashboard.</p>
+        </div>
+        <span class="live-tag">HC-SR04 EXAMPLE</span>
+      </div>
+      <div class="wiring-layout">
+        <div class="wiring-visual">
+          <svg class="wiring-svg" viewBox="0 0 760 300" role="img" aria-label="Animated wiring diagram showing ESP32 connected to an HC-SR04 ultrasonic sensor">
+            <defs>
+              <linearGradient id="boardFill" x1="0" x2="1"><stop offset="0" stop-color="#173b59"/><stop offset="1" stop-color="#276a82"/></linearGradient>
+              <linearGradient id="sensorFill" x1="0" x2="1"><stop offset="0" stop-color="#edf8fa"/><stop offset="1" stop-color="#d6eef1"/></linearGradient>
+              <filter id="softGlow"><feGaussianBlur stdDeviation="4"/></filter>
+            </defs>
+            <path class="wire wire-power" d="M235 88 C330 88 402 88 505 88"/>
+            <path class="wire wire-ground" d="M235 218 C330 218 402 218 505 218"/>
+            <path class="wire wire-trig" d="M235 125 C335 125 390 125 505 125"/>
+            <path class="wire wire-echo" d="M235 170 C335 170 390 170 505 170"/>
+            <circle class="signal-dot signal-power" r="5"><animateMotion dur="2.8s" repeatCount="indefinite" path="M235 88 C330 88 402 88 505 88"/></circle>
+            <circle class="signal-dot signal-trig" r="5"><animateMotion dur="2.1s" repeatCount="indefinite" path="M235 125 C335 125 390 125 505 125"/></circle>
+            <circle class="signal-dot signal-echo" r="5"><animateMotion dur="1.7s" repeatCount="indefinite" path="M505 170 C390 170 335 170 235 170"/></circle>
+            <rect class="device-board" x="45" y="50" width="190" height="205" rx="18" fill="url(#boardFill)"/>
+            <text class="device-title" x="140" y="83" text-anchor="middle">ESP32</text>
+            <text class="device-subtitle" x="140" y="101" text-anchor="middle">3.3 V microcontroller</text>
+            <rect class="pin pin-5v" x="208" y="77" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="91" text-anchor="end">5V / VIN</text>
+            <rect class="pin pin-trig" x="208" y="115" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="129" text-anchor="end">GPIO 5</text>
+            <rect class="pin pin-echo" x="208" y="160" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="174" text-anchor="end">GPIO 18</text>
+            <rect class="pin pin-gnd" x="208" y="208" width="27" height="20" rx="5"/><text class="pin-text" x="197" y="222" text-anchor="end">GND</text>
+            <rect class="sensor-body" x="505" y="74" width="205" height="160" rx="18" fill="url(#sensorFill)"/>
+            <text class="device-title sensor-title" x="607" y="102" text-anchor="middle">HC-SR04</text>
+            <text class="device-subtitle sensor-subtitle" x="607" y="120" text-anchor="middle">ultrasonic sensor</text>
+            <circle class="transducer" cx="558" cy="158" r="26"/><circle class="transducer" cx="656" cy="158" r="26"/>
+            <text class="sensor-pin-label" x="527" y="211">VCC</text><text class="sensor-pin-label" x="579" y="211">TRIG</text><text class="sensor-pin-label" x="631" y="211">ECHO</text><text class="sensor-pin-label" x="681" y="211">GND</text>
+            <text class="wire-label label-power" x="355" y="77">5 V power</text>
+            <text class="wire-label label-trig" x="355" y="116">trigger pulse</text>
+            <text class="wire-label label-echo" x="355" y="160">echo pulse ←</text>
+            <text class="wire-label label-ground" x="355" y="211">common ground</text>
+          </svg>
+          <div class="wiring-legend"><span><i class="legend-dot power"></i>Power</span><span><i class="legend-dot trig"></i>TRIG</span><span><i class="legend-dot echo"></i>ECHO return</span><span><i class="legend-dot ground"></i>Ground</span></div>
+        </div>
+        <div class="wiring-notes">
+          <div class="wiring-note safe"><strong>Important: protect ECHO</strong><span>HC-SR04 ECHO can output 5 V. ESP32 GPIO is 3.3 V. Use a resistor divider before GPIO 18.</span></div>
+          <div class="wiring-note"><strong>Suggested connections</strong><span>VCC → 5V/VIN · GND → GND · TRIG → GPIO 5 · ECHO → divider → GPIO 18.</span></div>
+          <div class="wiring-note"><strong>Use this website</strong><span>1. Build and power the circuit. 2. Upload firmware that sends one JSON line per reading. 3. Choose ESP32 mode. 4. Select USB Serial / COM or Wi-Fi. 5. Connect and confirm live readings.</span></div>
+          <pre class="wiring-code">{"distance_cm": 16.6}</pre>
+        </div>
+      </div>
+    </section>
+
     <section class="dashboard" aria-label="Water level dashboard">
       <article class="card bottle-card">
         <div class="card-head">
