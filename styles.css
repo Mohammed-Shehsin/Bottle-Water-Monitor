@@ -195,3 +195,24 @@ footer{display:flex;justify-content:space-between;gap:16px;color:#9aa8b1;font-si
 
 /* Respect hidden state for layout containers and subsection navigation */
 .section-nav[hidden],.dashboard[hidden],.wiring-card[hidden],.code-guide[hidden],.usage-guide[hidden]{display:none!important}
+
+
+/* SHeHSiN attribution and interactive help */
+.creator-label{color:var(--ink);font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;border:1px solid #dce9eb;border-radius:10px;background:rgba(255,255,255,.62)}
+.help-button{width:31px;height:31px;border:1px solid #cfe3e7;border-radius:50%;background:#eaf6f8;color:#216d86;font-size:16px;font-weight:850;line-height:1;cursor:pointer;transition:background .2s,color .2s,transform .15s}
+.help-button:hover{background:var(--ink);color:#fff;transform:translateY(-1px)}
+.help-button:focus-visible,.help-close:focus-visible{outline:3px solid #9fd9e9;outline-offset:3px}
+.help-panel{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:22px;background:rgba(17,44,65,.38);backdrop-filter:blur(4px)}
+.help-panel[hidden]{display:none!important}
+.help-card{width:min(650px,100%);max-height:min(720px,90vh);overflow:auto;background:#fff;border:1px solid #dce8eb;border-radius:22px;box-shadow:0 25px 80px rgba(14,43,63,.24);padding:24px}
+.help-card-head{display:flex;justify-content:space-between;align-items:start;gap:16px}
+.help-card-head h2{margin:0;font-size:21px;letter-spacing:-.03em}
+.help-close{border:0;background:#f0f5f6;color:#526d7d;border-radius:10px;width:32px;height:32px;font-size:21px;line-height:1;cursor:pointer}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.help-item{display:flex;gap:10px;padding:13px;border:1px solid var(--line);border-radius:13px;background:#fbfdfd}
+.help-number{display:grid;place-items:center;flex:none;width:23px;height:23px;border-radius:50%;background:#e6f4f6;color:#247790;font-weight:850;font-size:11px}
+.help-item strong{display:block;color:var(--ink);font-size:12px}
+.help-item p{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.45}
+.help-tip{margin-top:13px;padding:12px 13px;border-radius:12px;background:#fff7e9;border:1px solid #f1dfb9;color:#805f21;font-size:11px;line-height:1.5}
+@media(max-width:820px){.creator-label{display:none}}
+@media(max-width:520px){.help-card{padding:18px 14px;border-radius:18px}.help-grid{grid-template-columns:1fr}.help-card-head h2{font-size:18px}}
