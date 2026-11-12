@@ -96,7 +96,10 @@
               <filter id="softGlow"><feGaussianBlur stdDeviation="4"/></filter>
             </defs>
             <path class="wire wire-power" d="M235 88 C330 88 402 88 505 88"/>
-            <path class="wire wire-ground" d="M235 218 C330 218 402 218 505 218"/>
+            <path class="wire wire-ground" d="M235 218 V250"/>
+            <path class="wire wire-ground" d="M681 218 V250"/>
+            <path class="divider-ground" d="M219 250 H251 M224 256 H246 M230 262 H240"/>
+            <path class="divider-ground" d="M665 250 H697 M670 256 H692 M676 262 H686"/>
             <path class="wire wire-trig" d="M235 125 C335 125 390 125 505 125"/>
             <path class="wire wire-echo" d="M235 170 H380"/>
             <path class="wire wire-echo" d="M450 170 H505"/>
@@ -127,7 +130,7 @@
             <text class="divider-label" x="415" y="155">R1 2.2 kΩ</text>
             <text class="divider-label" x="393" y="244">R2 3.3 kΩ</text>
             <text class="divider-voltage" x="397" y="287">≈3.0 V to GPIO 27</text>
-            <text class="wire-label label-ground" x="355" y="211">common ground</text>
+            <text class="wire-label label-ground" x="355" y="287">COMMON GROUND</text>
           </svg>
           <div class="wiring-legend"><span><i class="legend-dot power"></i>Power</span><span><i class="legend-dot trig"></i>TRIG</span><span><i class="legend-dot echo"></i>ECHO return</span><span><i class="legend-dot ground"></i>Ground</span></div>
         </div>
