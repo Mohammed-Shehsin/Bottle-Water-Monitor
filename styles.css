@@ -232,3 +232,6 @@ footer{display:flex;justify-content:space-between;gap:16px;color:#9aa8b1;font-si
 .divider-node{fill:#d06b4e;stroke:#fff;stroke-width:2}
 .divider-label{fill:#a9513e;font-size:9px;font-weight:800;paint-order:stroke;stroke:#f4f9f9;stroke-width:4px;stroke-linejoin:round}
 .divider-voltage{fill:#247790;font-size:9px;font-weight:800;paint-order:stroke;stroke:#f4f9f9;stroke-width:4px;stroke-linejoin:round}
+
+
+.device-ground{fill:none;stroke:#566976;stroke-width:3;stroke-linecap:round}
