@@ -63,7 +63,7 @@ The ESP32 pages are intentionally separated so the dashboard is not crowded with
 
 The Code subsection includes a copyable sketch authored by **Shehsin Thamarachalil Abdulresak**. It:
 
-- Reads the HC-SR04 using TRIG on GPIO 5 and ECHO on GPIO 18.
+- Reads the HC-SR04 using TRIG on GPIO 5 and ECHO on GPIO 27.
 - Calculates distance using the ultrasonic echo time.
 - Converts distance to an estimated level using calibrated empty/full distances.
 - Sends one JSON object every 500 ms at 115200 baud.
@@ -74,4 +74,4 @@ Example output:
 {"distance_cm":16.6,"level_percent":56.0}
 ```
 
-Before connecting ECHO to an ESP32 GPIO, use the resistor divider shown in the Schematics subsection because a standard HC-SR04 ECHO signal can be 5 V while ESP32 GPIO is 3.3 V.
+Before connecting ECHO to GPIO 27, use the resistor divider shown in the Schematics subsection. Use R1 = 2.2 kΩ from HC-SR04 ECHO to the GPIO 27 node, and R2 = 3.3 kΩ from that node to common GND. This reduces the approximately 5 V ECHO signal to a level suitable for the ESP32’s 3.3 V GPIO.
