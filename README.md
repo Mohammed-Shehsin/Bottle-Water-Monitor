@@ -1,79 +1,112 @@
 # Bottle Water-Level Monitor
 
-A responsive, single-page dashboard for the ultrasonic bottle water-level project. It has a local simulation mode and an ESP32 mode for USB serial or WebSocket data.
+A classroom project that estimates bottle fill height with an HC-SR04 ultrasonic sensor and an ESP32. The browser dashboard includes a simulation mode, live ESP32 view, animated wiring schematic, and copyable Arduino firmware.
 
-**Live website:** [https://mohammed-shehsin.github.io/Bottle-Water-Monitor/](https://mohammed-shehsin.github.io/Bottle-Water-Monitor/)
+**Live website:** [Bottle Water-Level Monitor](https://mohammed-shehsin.github.io/Bottle-Water-Monitor/)
 
-## Run locally
+**Author:** Shehsin Thamarachalil Abdulresak · **Project label:** SHeHSiN
 
-1. Install Git and a modern desktop Chrome or Edge browser if you plan to use USB serial.
-2. Open a terminal in this folder.
-3. Start a local web server:
+## Project status
 
-   **Windows:** `py -m http.server 8000`
+The website and software simulation are complete. The next step is to test the ESP32 and HC-SR04 hardware through USB Serial/COM. The physical sensor connection and readings have not yet been verified.
 
-   **macOS/Linux:** `python3 -m http.server 8000`
+The included Arduino sketch uses USB Serial at 115200 baud. The website also has a Wi-Fi WebSocket option, which requires WebSocket firmware on the ESP32; that firmware is not included in the current sketch.
 
-4. Open `http://localhost:8000` in your browser. The Simulation mode works immediately. Do not open `index.html` with `file://`; browser serial access requires a secure context such as localhost or HTTPS.
+## Website navigation
 
-## ESP32 data formats
+- **Simulation:** demonstrate the filling animation and history graph without hardware.
+- **ESP32 → Dashboard:** see live level, distance, status, and measurement history.
+- **ESP32 → Connect:** choose USB Serial/COM or Wi-Fi.
+- **ESP32 → Schematics:** view the animated HC-SR04 wiring diagram and connection table.
+- **ESP32 → Code:** copy the Arduino sketch for the first USB Serial test.
+- **Help (?) button:** explains the modes, navigation, data flow, and first hardware test.
 
-### USB UART / COM
+The Dashboard is the default ESP32 subsection. Select it to return from Connect, Schematics, or Code.
 
-In ESP32 mode, choose a port, select the same baud rate as the ESP32 firmware, and connect. The firmware should send one JSON object per line, for example:
+## Hardware wiring
+
+The diagram and sketch use an ESP32 with GPIO 5 for TRIG and GPIO 27 for ECHO.
+
+| HC-SR04 / divider point | Connect to |
+|---|---|
+| HC-SR04 VCC | ESP32 5V / VIN |
+| HC-SR04 GND | ESP32 GND |
+| HC-SR04 TRIG | ESP32 GPIO 5 |
+| HC-SR04 ECHO | R1, 2.2 kΩ, then the divider junction |
+| Divider junction | ESP32 GPIO 27 |
+| R2, 3.3 kΩ | Between the divider junction and GND |
+
+R1 is in series between ECHO and the junction. R2 connects from that junction to common GND. Connect the ESP32, HC-SR04, and divider grounds together.
+
+The HC-SR04 ECHO output can be about 5 V, while ESP32 GPIO uses 3.3 V logic. The divider reduces a nominal 5 V signal to approximately 3.0 V:
+
+`V_{GPIO}=5\,V\times\frac{3.3\,k\Omega}{2.2\,k\Omega+3.3\,k\Omega}\approx3.0\,V`
+
+Do not connect the HC-SR04 ECHO pin directly to an ESP32 GPIO.
+
+## First hardware test: USB Serial/COM
+
+1. Open **ESP32 → Code**, copy the sketch, and upload it using Arduino IDE for your ESP32 board.
+2. The sketch uses TRIG GPIO 5, ECHO GPIO 27, and 115200 baud. Keep the ESP32 connected by USB.
+3. Close Arduino IDE Serial Monitor or any other program currently using the ESP32 COM port.
+4. Open the live website in desktop Chrome or Edge. Select **ESP32 → Connect**.
+5. Choose **USB Serial / COM**, select the ESP32 port, select **115200 baud**, and connect.
+6. Confirm that the connection status changes and that distance, level, bottle fill, and history update.
+
+If readings do not appear, check the selected COM port and baud rate, the TRIG/ECHO pins, the divider, and the common ground. The percentage estimate also depends on correct empty/full calibration.
+
+## Data format
+
+The page accepts one JSON object per line over Serial, or one JSON object per WebSocket message over Wi-Fi:
 
 ```json
 {"distance_cm":16.6}
 ```
 
-or:
+or
 
 ```json
 {"level_percent":56}
 ```
 
-The page supports desktop Chromium browsers that implement Web Serial. iPhone browsers do not expose COM ports.
-
-### Wi-Fi WebSocket
-
-Enter a WebSocket endpoint and send one JSON object per WebSocket message using the same fields. On an HTTPS-hosted page, use a secure `wss://` endpoint. A plain `ws://` connection can be used when this page is served locally over HTTP, such as from the ESP32 itself.
-
-## Calibration
-
-The demo uses `D_empty = 30 cm` and `D_full = 6 cm`. Edit `EMPTY_DISTANCE_CM` and `FULL_DISTANCE_CM` near the top of `app.js` to match the installed sensor and bottle. The page maps sensor distance to fill height; tapered bottles need their own calibration if volume percentage is required.
-
-
-## Project attribution
-
-**SHeHSiN**  
-Author: **Shehsin Thamarachalil Abdulresak**
-
-This project is a classroom-oriented ultrasonic bottle water-level monitor with a browser dashboard, ESP32 firmware example, and animated wiring guide.
-
-## Website navigation
-
-- **Simulation:** test the bottle animation and graph without hardware.
-- **ESP32 → Dashboard:** view live level, distance, sensor status, and history.
-- **ESP32 → Connect:** choose USB Serial/COM or Wi-Fi and connect the device.
-- **ESP32 → Schematics:** view the animated HC-SR04-to-ESP32 wiring diagram.
-- **ESP32 → Code:** copy the Arduino IDE sketch and upload it to the ESP32.
-- **Help (?) button:** explains the navigation, data path, first hardware test, and ECHO voltage safety.
-
-The ESP32 pages are intentionally separated so the dashboard is not crowded with setup information. Select **Dashboard** to return to the bottle view.
-
-## ESP32 Arduino firmware
-
-The Code subsection includes a copyable sketch authored by **Shehsin Thamarachalil Abdulresak**. It:
-
-- Reads the HC-SR04 using TRIG on GPIO 5 and ECHO on GPIO 27.
-- Calculates distance using the ultrasonic echo time.
-- Converts distance to an estimated level using calibrated empty/full distances.
-- Sends one JSON object every 500 ms at 115200 baud.
-
-Example output:
+The provided sketch sends both values, for example:
 
 ```json
 {"distance_cm":16.6,"level_percent":56.0}
 ```
 
-Before connecting ECHO to GPIO 27, use the resistor divider shown in the Schematics subsection. Use R1 = 2.2 kΩ from HC-SR04 ECHO to the GPIO 27 node, and R2 = 3.3 kΩ from that node to common GND. This reduces the approximately 5 V ECHO signal to a level suitable for the ESP32’s 3.3 V GPIO.
+For Serial, use the same baud rate in the browser and ESP32 firmware. Web Serial requires a supported desktop browser and a secure page context such as HTTPS or localhost. iPhone browsers do not expose COM ports.
+
+For Wi-Fi from this HTTPS-hosted page, use a secure `wss://` WebSocket endpoint. A plain `ws://` endpoint can be used when the page is served locally over HTTP, for example from the ESP32 itself.
+
+## Run locally
+
+From a terminal in the project folder, start a local web server:
+
+**Windows**
+
+```powershell
+py -m http.server 8000
+```
+
+**macOS / Linux**
+
+```sh
+python3 -m http.server 8000
+```
+
+Then open [http://localhost:8000](http://localhost:8000). Do not open the page with a `file://` URL when using browser Serial access.
+
+## Calibration
+
+The example uses an empty distance of 30 cm and a full distance of 6 cm. These are starting values, not universal bottle dimensions. Adjust `EMPTY_DISTANCE_CM` and `FULL_DISTANCE_CM` in `app.js` and the matching constants in the ESP32 sketch to fit the sensor mounting and bottle.
+
+The displayed percentage estimates water height. A tapered bottle does not have a linear relationship between height percentage and volume percentage, so volume estimation requires separate calibration.
+
+## Implementation
+
+- `index.html` — page structure, schematic, navigation, and firmware example
+- `styles.css` — responsive layout and visual styling
+- `app.js` — simulation, navigation, Serial/WebSocket input, and chart updates
+
+The ESP32 mode shows hardware readings only after valid device data arrives; it does not substitute simulated readings when disconnected.
