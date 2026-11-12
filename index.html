@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f9f8">
+<title>Bottle Water-Level Monitor</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.8S5.5 10.1 5.5 14.1a6.5 6.5 0 0 0 13 0C18.5 10.1 12 2.8 12 2.8Z" fill="currentColor" opacity=".17"/><path d="M12 3.1S6.2 9.8 6.2 14a5.8 5.8 0 1 0 11.6 0C17.8 9.8 12 3.1 12 3.1Z" stroke="currentColor" stroke-width="1.8"/><path d="M9.2 14.8c.2 1.5 1.1 2.4 2.7 2.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span>Bottle Monitor<small>Ultrasonic level system</small></span>
+    </div>
+    <div class="top-right">
+      <div class="mode-switch" role="group" aria-label="Dashboard mode">
+        <button class="mode-tab" id="simModeBtn" type="button" aria-pressed="true">Simulation</button>
+        <button class="mode-tab" id="espModeBtn" type="button" aria-pressed="false">ESP32</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">Live dashboard</p><h1>Bottle Water-Level Monitor</h1><p class="sub">Track the fill level as water rises. The bottle display and readings update together.</p></div>
+      <div class="updated" id="updated">Demo readings · ready</div>
+    </section>
+
+    <section class="card connection-panel" id="connectionPanel" hidden aria-label="ESP32 connection settings">
+      <div class="connection-head">
+        <div><p class="eyebrow">ESP32 mode</p><h2>Connect your device</h2><p>Hardware readings appear only after a connection sends valid sensor data.</p></div>
+        <span class="live-tag" id="connectionModeTag">NOT CONNECTED</span>
+      </div>
+      <div class="connection-grid">
+        <div class="transport-box">
+          <div class="transport-tabs" role="tablist" aria-label="Connection type">
+            <button class="transport-tab" id="serialTab" type="button" role="tab" aria-selected="true">USB Serial / COM</button>
+            <button class="transport-tab" id="wifiTab" type="button" role="tab" aria-selected="false">Wi-Fi</button>
+          </div>
+          <div class="transport-panel" id="serialPanel">
+            <label class="field-label" for="serialPortSelect">Selected serial device</label>
+            <div class="field-row">
+              <select id="serialPortSelect" aria-label="Select an authorized serial port"><option value="">Choose a port…</option></select>
+              <select id="baudSelect" class="baud-select" aria-label="Serial baud rate">
+                <option value="115200" selected>115200 baud</option><option value="9600">9600 baud</option><option value="19200">19200 baud</option><option value="38400">38400 baud</option><option value="57600">57600 baud</option>
+              </select>
+            </div>
+            <div class="connection-actions">
+              <button class="btn btn-secondary" id="choosePortBtn" type="button">Choose COM port</button>
+              <button class="btn btn-primary" id="serialConnectBtn" type="button" disabled>Connect</button>
+            </div>
+            <p class="connect-help" id="serialHelp">Choose a port to grant browser access. Supported in desktop Chrome or Edge; this port picker is not available in iPhone browsers.</p>
+          </div>
+          <div class="transport-panel" id="wifiPanel" hidden>
+            <label class="field-label" for="wifiUrl">ESP32 WebSocket address</label>
+            <div class="field-row"><input id="wifiUrl" type="url" value="wss://esp32.local/ws" placeholder="wss://esp32.local/ws" autocomplete="url"></div>
+            <div class="connection-actions"><button class="btn btn-primary" id="wifiConnectBtn" type="button">Connect over Wi-Fi</button></div>
+            <p class="connect-help">Send JSON messages such as <code>{"distance_cm":16.6}</code> or <code>{"level_percent":56}</code>. This hosted HTTPS page needs a secure <code>wss://</code> endpoint; a local <code>ws://</code> link must be used from a page served by the ESP32 or another local HTTP page.</p>
+          </div>
+        </div>
+        <div class="transport-box">
+          <span class="field-label">Expected sensor message</span>
+          <pre style="margin:0;background:#f0f6f7;border-radius:10px;padding:12px;color:#31566b;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap">{"distance_cm": 16.6}</pre>
+          <p class="device-note">Send one JSON object per line over serial, or one JSON message per WebSocket frame. You can send <code>distance_cm</code> or <code>level_percent</code>.</p>
+          <div class="connection-status" id="connectionStatus" data-state="idle" role="status" aria-live="polite"><i></i><span id="connectionStatusText">ESP32 is not connected. No hardware readings are shown.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard" aria-label="Water level dashboard">
+      <article class="card bottle-card">
+        <div class="card-head">
+          <div><h2 class="card-title">Bottle fill visualization</h2><p class="card-caption">The water height follows the measured level</p></div>
+          <span class="live-tag" id="sensorTag">SIMULATION</span>
+        </div>
+        <div class="bottle-stage">
+          <div class="bottle-glow"></div>
+          <svg class="bottle-svg" viewBox="0 0 280 360" role="img" aria-label="Illustration of a bottle filled to 56 percent">
+            <defs>
+              <linearGradient id="waterGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#73d7e8"/><stop offset="1" stop-color="#319fce"/></linearGradient>
+              <clipPath id="bottleClip"><path d="M73 105 Q73 89 89 89 H105 V55 Q105 43 117 43 H163 Q175 43 175 55 V89 H191 Q207 89 207 105 V294 Q207 320 181 328 H99 Q73 320 73 294 Z"/></clipPath>
+            </defs>
+            <ellipse cx="140" cy="340" rx="84" ry="10" fill="#dfeff2"/>
+            <path class="sensor-icon" d="M113 15h54a7 7 0 0 1 7 7v14h-68V22a7 7 0 0 1 7-7Z"/>
+            <path class="sensor-dot" d="M121 25a4 4 0 1 0 0 .1M159 25a4 4 0 1 0 0 .1"/>
+            <path class="sensor-beam" d="M124 42 108 83M156 42 172 83"/>
+            <path class="bottle-neck" d="M105 89V55Q105 43 117 43H163Q175 43 175 55V89"/>
+            <g clip-path="url(#bottleClip)">
+              <rect id="waterRect" class="water" x="70" y="208" width="140" height="130"/>
+              <path id="surface" class="water-surface" d="M74 208 Q92 202 110 208 T146 208 T182 208 T218 208"/>
+              <circle cx="108" cy="248" r="3" fill="#c2f3f4" opacity=".65"/><circle cx="177" cy="276" r="4" fill="#c2f3f4" opacity=".55"/><circle cx="133" cy="298" r="2.5" fill="#c2f3f4" opacity=".65"/>
+            </g>
+            <path class="bottle-outline" d="M73 105Q73 89 89 89H191Q207 89 207 105V294Q207 320 181 328H99Q73 320 73 294Z"/>
+            <path class="bottle-mark" d="M79 143h14M79 190h14M79 237h14M79 284h14"/>
+            <text class="bottle-mark-label" x="48" y="146">75%</text><text class="bottle-mark-label" x="48" y="193">50%</text><text class="bottle-mark-label" x="48" y="240">25%</text>
+            <rect x="101" y="39" width="78" height="12" rx="5" fill="#d9e8ec" stroke="#8bb4c1" stroke-width="2"/>
+          </svg>
+          <div class="bottle-data">Sensor-to-water distance<strong id="bottleDistance">16.6 cm</strong></div>
+        </div>
+        <div class="fill-controls sim-only" id="simulationControls">
+          <div class="control-top"><label for="fillRange">Simulate water level</label><output id="rangeOutput" for="fillRange">56%</output></div>
+          <input id="fillRange" type="range" min="0" max="100" value="56" aria-label="Set simulated bottle fill level">
+          <div class="control-actions">
+            <button class="btn btn-primary" id="toggleBtn" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5 3.3c0-.6.7-.9 1.2-.6l6 4.1a1.4 1.4 0 0 1 0 2.3l-6 4.1c-.5.3-1.2 0-1.2-.6V3.3Z"/></svg><span>Start filling</span></button>
+            <button class="btn btn-secondary" id="emptyBtn" type="button">Empty</button>
+            <button class="btn btn-secondary" id="fullBtn" type="button">Fill to 100%</button>
+            <span class="control-hint">Drag the slider or run the fill simulation</span>
+          </div>
+        </div>
+      </article>
+
+      <div class="metrics">
+        <article class="card metric metric-fill">
+          <div class="metric-label"><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3s-6 6.7-6 11a6 6 0 1 0 12 0c0-4.3-6-11-6-11Z" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 15.5c.2 1.3 1 2 2.2 2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>WATER LEVEL</div>
+          <div class="metric-value"><span id="levelValue">56</span><span class="metric-unit">%</span></div>
+          <div class="metric-foot">Estimated fill height</div>
+          <svg class="gauge" viewBox="0 0 60 60" aria-hidden="true"><circle class="gauge-bg" cx="30" cy="30" r="24"/><circle class="gauge-progress" id="gaugeProgress" cx="30" cy="30" r="24"/></svg>
+        </article>
+        <article class="card metric">
+          <div class="metric-label"><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M7 8l5-5 5 5M7 16l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>DISTANCE TO WATER</div>
+          <div class="metric-value"><span id="distanceValue">16.6</span><span class="metric-unit">cm</span></div>
+          <div class="metric-foot">Ultrasonic echo distance</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-label"><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 7.8 7.5 9.5 4.3-1.7 7.5-4.9 7.5-9.5V6L12 3Z" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SENSOR STATUS</div>
+          <div class="status-line"><i class="status-dot"></i><span id="statusValue">Reading normally</span></div>
+          <div class="status-note" id="statusNote">Simulation data · hardware not connected</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-label"><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 18V6m0 12h16M7 15l4-4 3 2 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>LAST UPDATE</div>
+          <div class="metric-value metric-clock" id="timeValue">--:--:--</div>
+          <div class="metric-foot">Browser local time</div>
+        </article>
+        <article class="card chart-card">
+          <div class="chart-head"><div><h2 class="chart-title">Water-level history</h2><div class="chart-sub" id="chartSub">Simulated fill over time</div></div><div class="chart-legend"><i></i> Fill level</div></div>
+          <div class="chart-wrap"><svg id="chart" viewBox="0 0 620 125" preserveAspectRatio="none" role="img" aria-label="Graph of simulated water level over time">
+            <defs><linearGradient id="chartFade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#54b8d7" stop-opacity=".23"/><stop offset="1" stop-color="#54b8d7" stop-opacity="0"/></linearGradient></defs>
+            <g id="chartGrid"></g><path class="chart-area" id="chartArea"></path><path class="chart-line" id="chartLine"></path><g id="chartPoints"></g>
+          </svg></div>
+        </article>
+      </div>
+    </section>
+
+    <div class="footnote" id="modeFootnote"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10.8v5M12 7.8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="footnoteText"><strong>Simulation:</strong> adjust the slider or start the fill animation. In ESP32 mode, the dashboard waits for a real device connection.</span></div>
+    <footer><span>Ultrasonic bottle level · classroom prototype</span><span>Level estimate is based on calibrated bottle height</span></footer>
+  </main>
+</div>
+<script src="./app.js" defer></script>
+</body>
+</html>
