@@ -452,7 +452,7 @@
     $("simModeBtn").setAttribute("aria-pressed", String(simulation));
     $("espModeBtn").setAttribute("aria-pressed", String(!simulation));
     connectionPanel.hidden = simulation;
-    wiringGuide.hidden = simulation;
+    if (wiringGuide) wiringGuide.hidden = simulation;
     simulationControls.hidden = !simulation;
     $("chartSub").textContent = simulation ? "Simulated fill over time" : "Waiting for live sensor data";
     $("footnoteText").innerHTML = simulation
