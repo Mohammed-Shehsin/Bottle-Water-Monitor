@@ -29,9 +29,10 @@
     </section>
 
     <nav class="section-nav" id="esp32Nav" hidden aria-label="ESP32 setup sections">
-      <a href="#wiringGuide">01 Wiring</a>
-      <a href="#codeGuide">02 Firmware code</a>
-      <a href="#usageGuide">03 Use the dashboard</a>
+      <button class="guide-tab active" type="button" data-guide-target="dashboard">Dashboard</button>
+      <button class="guide-tab" type="button" data-guide-target="connect">Connect</button>
+      <button class="guide-tab" type="button" data-guide-target="schematics">Schematics</button>
+      <button class="guide-tab" type="button" data-guide-target="code">Code</button>
     </nav>
 
     <section class="card connection-panel" id="connectionPanel" hidden aria-label="ESP32 connection settings">
@@ -204,7 +205,7 @@ void loop() {
       </ol>
     </section>
 
-    <section class="dashboard" aria-label="Water level dashboard">
+    <section class="dashboard" id="dashboardSection" aria-label="Water level dashboard">
       <article class="card bottle-card">
         <div class="card-head">
           <div><h2 class="card-title">Bottle fill visualization</h2><p class="card-caption">The water height follows the measured level</p></div>
