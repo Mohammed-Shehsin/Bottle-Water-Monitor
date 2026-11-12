@@ -124,3 +124,42 @@ footer{display:flex;justify-content:space-between;gap:16px;color:#9aa8b1;font-si
 /* Extracted presentation details */
 .baud-select{max-width:130px}
 .metric-clock{font-size:24px}
+
+
+/* Animated ESP32-to-ultrasonic wiring guide */
+.wiring-card{padding:23px 25px 20px;overflow:hidden}
+.wiring-head{display:flex;justify-content:space-between;align-items:start;gap:18px}
+.wiring-head h2{font-size:17px;margin:0;letter-spacing:-.025em}
+.wiring-head p:not(.eyebrow){margin:5px 0 0;color:var(--muted);font-size:12px;max-width:680px}
+.wiring-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(230px,.7fr);gap:18px;margin-top:18px}
+.wiring-visual{border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,#fbfefe,#f2f8f9);padding:10px 12px 12px}
+.wiring-svg{display:block;width:100%;height:auto;min-height:230px}
+.device-board{filter:drop-shadow(0 9px 13px rgba(23,59,89,.16))}
+.device-title{fill:#fff;font-size:19px;font-weight:800;letter-spacing:-.03em}
+.device-subtitle{fill:#c8e4e9;font-size:10px}
+.sensor-title{fill:#22566c;font-size:18px}
+.sensor-subtitle{fill:#5b7c89}
+.pin{stroke:#fff;stroke-width:2}
+.pin-5v{fill:#ed6a58}.pin-trig{fill:#e8ad46}.pin-echo{fill:#e58455}.pin-gnd{fill:#566976}
+.pin-text{fill:#eaf4f5;font-size:10px;font-weight:750}
+.sensor-pin-label{fill:#588090;font-size:10px;font-weight:750}
+.transducer{fill:#b8dce2;stroke:#5d9aab;stroke-width:4}
+.transducer::after{content:""}
+.wire{fill:none;stroke-width:4;stroke-linecap:round;stroke-dasharray:9 8}
+.wire-power{stroke:#ed6a58}.wire-trig{stroke:#e8ad46}.wire-echo{stroke:#e58455}.wire-ground{stroke:#566976}
+.signal-dot{stroke:#fff;stroke-width:2}
+.signal-power{fill:#ff8b77}.signal-trig{fill:#ffd16c}.signal-echo{fill:#ffae77}
+.wire-label{font-size:10px;font-weight:750;paint-order:stroke;stroke:#f4f9f9;stroke-width:4px;stroke-linejoin:round}
+.label-power{fill:#c65447}.label-trig{fill:#a77520}.label-echo{fill:#bd6741}.label-ground{fill:#566976}
+.wiring-legend{display:flex;flex-wrap:wrap;gap:11px 17px;padding:4px 4px 0;color:var(--muted);font-size:10px}
+.wiring-legend span{display:inline-flex;align-items:center;gap:6px}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.legend-dot.power{background:#ed6a58}.legend-dot.trig{background:#e8ad46}.legend-dot.echo{background:#e58455}.legend-dot.ground{background:#566976}
+.wiring-notes{display:grid;align-content:start;gap:10px}
+.wiring-note{display:grid;gap:4px;padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:#fbfdfd;color:#536d7c;font-size:11px;line-height:1.45}
+.wiring-note strong{color:var(--ink);font-size:11px}
+.wiring-note.safe{background:#fff7e9;border-color:#f1dfb9}
+.wiring-note.safe strong{color:#8a651b}
+.wiring-code{margin:0;padding:11px 12px;border-radius:10px;background:#edf5f6;color:#31566b;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
+@media(max-width:820px){.wiring-layout{grid-template-columns:1fr}.wiring-notes{grid-template-columns:1fr 1fr}.wiring-code{grid-column:1/-1}}
+@media(max-width:520px){.wiring-card{padding:18px 14px}.wiring-head{flex-direction:column;gap:10px}.wiring-svg{min-height:170px}.wiring-notes{grid-template-columns:1fr}.wiring-code{grid-column:auto}.wiring-legend{gap:8px 12px;font-size:9px}}
