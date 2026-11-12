@@ -39,3 +39,39 @@ Enter a WebSocket endpoint and send one JSON object per WebSocket message using 
 ## Calibration
 
 The demo uses `D_empty = 30 cm` and `D_full = 6 cm`. Edit `EMPTY_DISTANCE_CM` and `FULL_DISTANCE_CM` near the top of `app.js` to match the installed sensor and bottle. The page maps sensor distance to fill height; tapered bottles need their own calibration if volume percentage is required.
+
+
+## Project attribution
+
+**SHeHSiN**  
+Author: **Shehsin Thamarachalil Abdulresak**
+
+This project is a classroom-oriented ultrasonic bottle water-level monitor with a browser dashboard, ESP32 firmware example, and animated wiring guide.
+
+## Website navigation
+
+- **Simulation:** test the bottle animation and graph without hardware.
+- **ESP32 → Dashboard:** view live level, distance, sensor status, and history.
+- **ESP32 → Connect:** choose USB Serial/COM or Wi-Fi and connect the device.
+- **ESP32 → Schematics:** view the animated HC-SR04-to-ESP32 wiring diagram.
+- **ESP32 → Code:** copy the Arduino IDE sketch and upload it to the ESP32.
+- **Help (?) button:** explains the navigation, data path, first hardware test, and ECHO voltage safety.
+
+The ESP32 pages are intentionally separated so the dashboard is not crowded with setup information. Select **Dashboard** to return to the bottle view.
+
+## ESP32 Arduino firmware
+
+The Code subsection includes a copyable sketch authored by **Shehsin Thamarachalil Abdulresak**. It:
+
+- Reads the HC-SR04 using TRIG on GPIO 5 and ECHO on GPIO 18.
+- Calculates distance using the ultrasonic echo time.
+- Converts distance to an estimated level using calibrated empty/full distances.
+- Sends one JSON object every 500 ms at 115200 baud.
+
+Example output:
+
+```json
+{"distance_cm":16.6,"level_percent":56.0}
+```
+
+Before connecting ECHO to an ESP32 GPIO, use the resistor divider shown in the Schematics subsection because a standard HC-SR04 ECHO signal can be 5 V while ESP32 GPIO is 3.3 V.
