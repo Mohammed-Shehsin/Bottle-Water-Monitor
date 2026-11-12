@@ -1,3 +1,5 @@
+// Bottle Water-Level Monitor web interface
+// Author: Shehsin Thamarachalil Abdulresak
 (() => {
   const EMPTY_DISTANCE_CM = 30;
   const FULL_DISTANCE_CM = 6;
@@ -18,6 +20,9 @@
   const usageGuide = $("usageGuide");
   const copyCodeButton = $("copyCodeBtn");
   const copyStatus = $("copyStatus");
+  const helpButton = $("helpButton");
+  const helpPanel = $("helpPanel");
+  const helpClose = $("helpClose");
   const serialSelect = $("serialPortSelect");
   const baudSelect = $("baudSelect");
   const serialConnectButton = $("serialConnectBtn");
@@ -554,6 +559,21 @@
   }
 
   if (copyCodeButton) copyCodeButton.addEventListener("click", copyFirmwareCode);
+
+  function setHelp(open) {
+    if (!helpPanel) return;
+    helpPanel.hidden = !open;
+    if (open && helpClose) helpClose.focus();
+  }
+
+  if (helpButton) helpButton.addEventListener("click", () => setHelp(true));
+  if (helpClose) helpClose.addEventListener("click", () => setHelp(false));
+  if (helpPanel) helpPanel.addEventListener("click", event => {
+    if (event.target === helpPanel) setHelp(false);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") setHelp(false);
+  });
 
   slider.addEventListener("input", event => renderSimulation(event.target.value));
   toggleButton.addEventListener("click", () => {
