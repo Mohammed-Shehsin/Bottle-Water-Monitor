@@ -441,7 +441,7 @@
     $("wifiPanel").hidden = serialActive;
   }
 
-  async function setMode(nextMode) {  function setGuideSection(target) {
+  function setGuideSection(target) {
     if (mode !== "esp32") return;
     const panels = {
       dashboard: dashboardSection,
@@ -462,7 +462,7 @@
     if (activePanel) activePanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-
+  async function setMode(nextMode) {
     if (mode === nextMode) return;
     if (fillTimer) {
       clearInterval(fillTimer);
